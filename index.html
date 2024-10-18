@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partes del Cuerpo Humano</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
+        h1 {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .body-image {
+            position: relative;
+        }
+
+        .body-image img {
+            width: 400px;
+            height: auto;
+        }
+
+        .drop-zone {
+            position: absolute;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 20px;
+            width: 75px;
+            height: 25px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .draggable {
+            margin: 0;
+            padding: 0;
+            width: 100%; 
+            text-align: center;
+        }
+
+        /* Posición de cada recuadro */
+        #head { top: 15px; left: 175px; }
+        #arm { top: 100px; left: 5px; }
+        #leg { top: 300px; left: 15px; }
+        #foot { top: 480px; left: 30px; }
+        #hand { top: 150px; left: 400px; }
+        #eyes { top: 20px; left: 300px; }
+        #nose { top: 63px; left: 350px; }
+        #abdomen { top: 225px; left: 15px; }
+        #knee { top: 380px; left: 2px; }
+        #elbow { top: 200px; left: 350px; }
+        #wrist { top: 60px; left: 5px; }
+        #mouth { top: 105px; left: 350px; }
+
+        .word-bank {
+            margin-left: 30px;
+            width: 200px;
+            text-align: left;
+        }
+
+        .word-bank h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .draggable {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #cce5ff;
+            cursor: grab;
+            border: 2px solid #0056b3;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .draggable:active {
+            cursor: grabbing;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        .dotted-box {
+            border: 2px dashed #ccc;
+            padding: 10px;
+            width: 200px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilo de las líneas */
+        .line {
+            position: absolute;
+            background-color: #0056b3; /* Cambiado a azul oscuro */
+            transition: opacity 0.2s;
+            height: 2px;
+        }
+
+        /* Añadir un puntito al final de cada línea */
+        .line::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background-color: #0056b3;
+            border-radius: 50%;
+            position: absolute;
+            right: 0;
+            top: -1.3px; /* Ajustar la posición vertical del puntito */
+        }
+
+        /* Líneas ajustadas según la estructura dada */
+        .line-head {
+           top: 69px;
+            left: 183px;
+            width: 55px;
+            transform: rotate(90deg); /* Diagonal hacia arriba a la derecha */
+        }
+
+        .line-arm {
+            top: 120px;
+            left: 82px;
+            width: 125px;
+            transform: rotate(0deg); /* Diagonal hacia abajo a la derecha */
+        }
+
+        .line-leg {
+            top: 315px;
+            left: 93px;
+            width: 74px;
+            transform: rotate(0deg); /* Diagonal hacia abajo a la derecha */
+        }
+
+        .line-foot {
+            top: 494px;
+            left: 108px;
+            width: 66px;
+            transform: rotate(0deg); /* Diagonal hacia arriba a la izquierda */
+        }
+
+        .line-hand {
+            top: 160px;
+            left: 314px;
+            width: 87px;
+            transform: rotate(-180deg); /* Diagonal hacia abajo a la derecha */
+        }
+
+        .line-eyes {
+            top: 78px;
+            left: 211px;
+            width: 108px;
+            transform: rotate(145deg); /* Diagonal hacia arriba a la derecha */
+        }
+
+        .line-nose {
+            top: 102px;
+            left: 222px;
+            width: 130px;
+            transform: rotate(165deg); /* Diagonal hacia arriba a la derecha */
+        }
+
+        .line-abdomen {
+          top: 242px;
+            left: 93px;
+            width: 100px;
+            transform: rotate(0deg); /* Diagonal hacia arriba a la derecha */
+        }
+
+        .line-knee {
+          top: 395px;
+            left: 80px;
+            width: 34px;
+            transform: rotate(0deg); /* Diagonal hacia arriba a la derecha */
+        }
+
+        .line-elbow {
+            top: 215px;
+            left: 297px;
+            width: 55px;
+            transform: rotate(-180deg); /* Diagonal hacia arriba a la izquierda */
+        }
+
+        .line-wrist {
+          top: 77px;
+            left: 83px;
+            width: 47px;
+            transform: rotate(20deg); /* Diagonal hacia arriba a la izquierda */
+        }
+
+        .line-mouth {
+          top: 124px;
+            left: 209px;
+            width: 143px;
+            transform: rotate(175deg); /* Diagonal hacia arriba a la derecha */
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Identifica las partes del cuerpo</h1>
+    <div class="container">
+        <div class="body-image">
+            <img src="https://github.com/Mark2024Eze/PartesDelCuerpo_Kinder/blob/main/3d-portrait-person-jumping.png?raw=true" alt="Cuerpo humano">
+            
+            <div id="head" class="drop-zone" data-part="head"></div>
+            <div id="arm" class="drop-zone" data-part="arm"></div>
+            <div id="leg" class="drop-zone" data-part="leg"></div>
+            <div id="foot" class="drop-zone" data-part="foot"></div>
+            <div id="hand" class="drop-zone" data-part="hand"></div>
+            <div id="eyes" class="drop-zone" data-part="eyes"></div>
+            <div id="nose" class="drop-zone" data-part="nose"></div>
+            <div id="abdomen" class="drop-zone" data-part="abdomen"></div>
+            <div id="knee" class="drop-zone" data-part="knee"></div>
+            <div id="elbow" class="drop-zone" data-part="elbow"></div>
+            <div id="wrist" class="drop-zone" data-part="wrist"></div>
+            <div id="mouth" class="drop-zone" data-part="mouth"></div>
+
+            <!-- Líneas para cada recuadro -->
+            <div class="line line-head"></div>
+            <div class="line line-arm"></div>
+            <div class="line line-leg"></div>
+            <div class="line line-foot"></div>
+            <div class="line line-hand"></div>
+            <div class="line line-eyes"></div>
+            <div class="line line-nose"></div>
+            <div class="line line-abdomen"></div>
+            <div class="line line-knee"></div>
+            <div class="line line-elbow"></div>
+            <div class="line line-wrist"></div>
+            <div class="line line-mouth"></div>
+        </div>
+
+        <div class="word-bank">
+            <h2>Palabras:</h2>
+            <div class="dotted-box">
+                <div class="draggable" draggable="true" data-word="head">Cabeza</div>
+                <div class="draggable" draggable="true" data-word="arm">Brazo</div>
+                <div class="draggable" draggable="true" data-word="leg">Pierna</div>
+                <div class="draggable" draggable="true" data-word="foot">Pie</div>
+                <div class="draggable" draggable="true" data-word="hand">Mano</div>
+                <div class="draggable" draggable="true" data-word="eyes">Ojos</div>
+                <div class="draggable" draggable="true" data-word="nose">Nariz</div>
+                <div class="draggable" draggable="true" data-word="abdomen">Abdomen</div>
+                <div class="draggable" draggable="true" data-word="knee">Rodilla</div>
+                <div class="draggable" draggable="true" data-word="elbow">Codo</div>
+                <div class="draggable" draggable="true" data-word="wrist">Muñeca</div>
+                <div class="draggable" draggable="true" data-word="mouth">Boca</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropZones = document.querySelectorAll('.drop-zone');
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', () => {
+                draggable.classList.add('dragging');
+            });
+
+            draggable.addEventListener('dragend', () => {
+                draggable.classList.remove('dragging');
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+            });
+
+            zone.addEventListener('drop', e => {
+                const dragged = document.querySelector('.dragging');
+                if (dragged && dragged.dataset.word === zone.dataset.part) {
+                    zone.appendChild(dragged);
+                    dragged.classList.remove('incorrect');  // Eliminar la clase incorrecta
+                    dragged.classList.add('correct');       // Agregar la clase correcta
+                } else {
+                    dragged.classList.add('incorrect');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
