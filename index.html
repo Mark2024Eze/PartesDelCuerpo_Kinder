@@ -12,7 +12,44 @@
             margin: 0;
             padding: 0;
         }
+        /* Estilo para el logo de fondo */
+    .background-logo {
+      background-image: url('https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true'); /* URL del logo */
+      background-size: 25%; /* Ajusta el tamaño de la imagen de fondo */
+      background-repeat: no-repeat; /* Evita que se repita la imagen */
+      background-position: center 300px; /* Centra la imagen */
+      opacity: 0.1; /* Ajusta la opacidad para que sea tenue */
+      position: absolute; /* Posiciona el logo de fondo */
+      top: 0; /* Alinea al principio */
+      left: 0; /* Alinea al inicio */
+      right: 0; /* Alinea al final */
+      bottom: 0; /* Alinea al final */
+      z-index: -1; /* Coloca detrás de otros elementos */
+    }
 
+   /* Ajustes para pantallas más pequeñas, como móviles */
+   @media (max-width: 400px) {
+  .background-logo {
+    background-size: 210px auto; /* Redimensiona el logo para móviles */
+    background-position: center 500px; /* Baja la imagen 150px en móviles */
+  }
+    }
+
+    /* Ajustes para pantallas medianas, como tablets */
+    @media (min-width: 769px) and (max-width: 1200px) {
+     .background-logo {
+     background-size: 700px auto; /* Tamaño intermedio del logo */
+     background-position: center 300px; /* Ajusta la posición del logo */
+    }
+   }
+
+    /* Ajustes para pantallas grandes, como PC */
+    @media (min-width: 1201px) {
+    .background-logo {
+     background-size: 25%; /* Tamaño más grande del logo en PC */
+     background-position: center 300px; /* Ajusta la posición del logo */
+    }
+   }
         h1 {
             margin-top: 20px;
             font-size: 24px;
@@ -41,7 +78,7 @@
             border-radius: 5px;
             text-align: center;
             line-height: 20px;
-            width: 75px;
+            width: 70px;
             height: 25px;
             display: flex; 
             justify-content: center; 
@@ -81,8 +118,8 @@
         }
 
         .draggable {
-            margin: 10px 0;
-            padding: 10px;
+            margin: 3px 0;
+            padding: 7px;
             background-color: #cce5ff;
             cursor: grab;
             border: 2px solid #0056b3;
@@ -90,6 +127,8 @@
             display: inline-block;
             text-align: center;
             transition: transform 0.2s;
+            font-size: 15px; /* Ajusta el tamaño de la fuente aquí */
+           
         }
 
         .draggable:active {
@@ -222,11 +261,15 @@
     </style>
 </head>
 <body>
-    <h1>Identifica las partes del cuerpo</h1>
+    <div class="background-logo"></div> <!-- Logo de fondo -->
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+        <img src="https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true" alt="Instituto Overcome" style="max-width: 100px; margin-right: 20px;">
+        <h1>Identifica las partes del cuerpo</h1>
+    </div>
+
     <div class="container">
         <div class="body-image">
             <img src="https://github.com/Mark2024Eze/PartesDelCuerpo_Kinder/blob/main/3d-portrait-person-jumping.png?raw=true" alt="Cuerpo humano">
-            
             <div id="head" class="drop-zone" data-part="head"></div>
             <div id="arm" class="drop-zone" data-part="arm"></div>
             <div id="leg" class="drop-zone" data-part="leg"></div>
