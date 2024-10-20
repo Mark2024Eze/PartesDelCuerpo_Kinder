@@ -12,44 +12,7 @@
             margin: 0;
             padding: 0;
         }
-        /* Estilo para el logo de fondo */
-    .background-logo {
-      background-image: url('https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true'); /* URL del logo */
-      background-size: 25%; /* Ajusta el tamaño de la imagen de fondo */
-      background-repeat: no-repeat; /* Evita que se repita la imagen */
-      background-position: center 300px; /* Centra la imagen */
-      opacity: 0.1; /* Ajusta la opacidad para que sea tenue */
-      position: absolute; /* Posiciona el logo de fondo */
-      top: 0; /* Alinea al principio */
-      left: 0; /* Alinea al inicio */
-      right: 0; /* Alinea al final */
-      bottom: 0; /* Alinea al final */
-      z-index: -1; /* Coloca detrás de otros elementos */
-    }
 
-   /* Ajustes para pantallas más pequeñas, como móviles */
-   @media (max-width: 400px) {
-  .background-logo {
-    background-size: 210px auto; /* Redimensiona el logo para móviles */
-    background-position: center 500px; /* Baja la imagen 150px en móviles */
-  }
-    }
-
-    /* Ajustes para pantallas medianas, como tablets */
-    @media (min-width: 769px) and (max-width: 1200px) {
-     .background-logo {
-     background-size: 700px auto; /* Tamaño intermedio del logo */
-     background-position: center 300px; /* Ajusta la posición del logo */
-    }
-   }
-
-    /* Ajustes para pantallas grandes, como PC */
-    @media (min-width: 1201px) {
-    .background-logo {
-     background-size: 25%; /* Tamaño más grande del logo en PC */
-     background-position: center 300px; /* Ajusta la posición del logo */
-    }
-   }
         h1 {
             margin-top: 20px;
             font-size: 24px;
@@ -97,14 +60,14 @@
         #arm { top: 100px; left: 5px; }
         #leg { top: 300px; left: 15px; }
         #foot { top: 480px; left: 30px; }
-        #hand { top: 150px; left: 400px; }
-        #eyes { top: 20px; left: 300px; }
-        #nose { top: 63px; left: 350px; }
+        #hand { top: 150px; left: 350px; }
+        #eyes { top: 20px; left: 265px; }
+        #nose { top: 63px; left: 310px; }
         #abdomen { top: 225px; left: 15px; }
         #knee { top: 380px; left: 2px; }
         #elbow { top: 200px; left: 350px; }
         #wrist { top: 60px; left: 5px; }
-        #mouth { top: 105px; left: 350px; }
+        #mouth { top: 105px; left: 310px; }
 
         .word-bank {
             margin-left: 30px;
@@ -261,15 +224,11 @@
     </style>
 </head>
 <body>
-    <div class="background-logo"></div> <!-- Logo de fondo -->
-    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-        <img src="https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true" alt="Instituto Overcome" style="max-width: 100px; margin-right: 20px;">
-        <h1>Identifica las partes del cuerpo</h1>
-    </div>
-
+    <h1>Identifica las partes del cuerpo</h1>
     <div class="container">
         <div class="body-image">
             <img src="https://github.com/Mark2024Eze/PartesDelCuerpo_Kinder/blob/main/3d-portrait-person-jumping.png?raw=true" alt="Cuerpo humano">
+            
             <div id="head" class="drop-zone" data-part="head"></div>
             <div id="arm" class="drop-zone" data-part="arm"></div>
             <div id="leg" class="drop-zone" data-part="leg"></div>
