@@ -353,75 +353,48 @@
     </div>
 
     <script>
-        const draggables = document.querySelectorAll('.draggable');
-        const dropZones = document.querySelectorAll('.drop-zone');
+        <script>
+    const draggables = document.querySelectorAll('.draggable');
+    const dropZones = document.querySelectorAll('.drop-zone');
 
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', () => {
-                draggable.classList.add('dragging');
-            });
-
-            draggable.addEventListener('dragend', () => {
-                draggable.classList.remove('dragging');
-            });
-
-            // Agregar eventos táctiles
-            draggable.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                draggable.classList.add('dragging');
-            });
-
-            draggable.addEventListener('touchend', () => {
-                draggable.classList.remove('dragging');
-            });
+    draggables.forEach(draggable => {
+        draggable.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Evitar comportamiento predeterminado
+            draggable.classList.add('dragging');
         });
 
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', e => {
-                e.preventDefault();
-            });
+        draggable.addEventListener('touchend', () => {
+            draggable.classList.remove('dragging');
+        });
+    });
 
-            zone.addEventListener('drop', e => {
-                const dragged = document.querySelector('.dragging');
-                if (dragged && dragged.dataset.word === zone.dataset.part) {
-                    zone.appendChild(dragged);
-                    dragged.classList.remove('incorrect');  // Eliminar la clase incorrecta
-                    dragged.classList.add('correct');       // Agregar la clase correcta
-                    dragged.draggable = false;              // Deshabilitar el arrastre
-                } else {
+    dropZones.forEach(zone => {
+        zone.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Permite que el área de soltado acepte el elemento
+        });
+
+        zone.addEventListener('touchend', (e) => {
+            const dragged = document.querySelector('.dragging');
+            if (dragged && dragged.dataset.word === zone.dataset.part) {
+                zone.appendChild(dragged);
+                dragged.classList.remove('incorrect');
+                dragged.classList.add('correct');
+                dragged.draggable = false;
+            } else {
+                if (dragged) {
                     dragged.classList.add('incorrect');
-                    zone.classList.add('zone-incorrecta'); // Marcar la zona como incorrecta visualmente
-
-                    // Quitar la clase de incorrecto después de 1 segundo
-                     setTimeout(() => {
-                     dragged.classList.remove('incorrect');
-                    zone.classList.remove('zone-incorrecta');
-                  }, 1000);
                 }
-            });
-             // Agregar eventos táctiles
-             zone.addEventListener('touchmove', e => {
-                e.preventDefault();
-            });
+                zone.classList.add('zone-incorrecta');
 
-            zone.addEventListener('touchend', e => {
-                const dragged = document.querySelector('.dragging');
-                if (dragged && dragged.dataset.word === zone.dataset.part) {
-                    zone.appendChild(dragged);
-                    dragged.classList.remove('incorrect');
-                    dragged.classList.add('correct');
-                    dragged.draggable = false;
-                } else {
-                    dragged.classList.add('incorrect');
-                    zone.classList.add('zone-incorrecta');
-
-                    setTimeout(() => {
+                setTimeout(() => {
+                    if (dragged) {
                         dragged.classList.remove('incorrect');
-                        zone.classList.remove('zone-incorrecta');
-                    }, 1000);
-                }
-            });
+                    }
+                    zone.classList.remove('zone-incorrecta');
+                }, 1000);
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
