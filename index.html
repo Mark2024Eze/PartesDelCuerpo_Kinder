@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.65">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partes del Cuerpo Humano</title>
     <style>
         body {
@@ -364,6 +364,16 @@
             draggable.addEventListener('dragend', () => {
                 draggable.classList.remove('dragging');
             });
+
+            // Agregar eventos táctiles
+            draggable.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                draggable.classList.add('dragging');
+            });
+
+            draggable.addEventListener('touchend', () => {
+                draggable.classList.remove('dragging');
+            });
         });
 
         dropZones.forEach(zone => {
@@ -387,6 +397,28 @@
                      dragged.classList.remove('incorrect');
                     zone.classList.remove('zone-incorrecta');
                   }, 1000);
+                }
+            });
+             // Agregar eventos táctiles
+             zone.addEventListener('touchmove', e => {
+                e.preventDefault();
+            });
+
+            zone.addEventListener('touchend', e => {
+                const dragged = document.querySelector('.dragging');
+                if (dragged && dragged.dataset.word === zone.dataset.part) {
+                    zone.appendChild(dragged);
+                    dragged.classList.remove('incorrect');
+                    dragged.classList.add('correct');
+                    dragged.draggable = false;
+                } else {
+                    dragged.classList.add('incorrect');
+                    zone.classList.add('zone-incorrecta');
+
+                    setTimeout(() => {
+                        dragged.classList.remove('incorrect');
+                        zone.classList.remove('zone-incorrecta');
+                    }, 1000);
                 }
             });
         });
