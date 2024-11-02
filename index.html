@@ -352,42 +352,44 @@
         </div>
     </div>
 
-    <script>
-        const draggables = document.querySelectorAll('.draggable');
-        const dropZones = document.querySelectorAll('.drop-zone');
-    
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', () => {
-                draggable.classList.add('dragging');
-            });
-    
-            draggable.addEventListener('dragend', () => {
-                draggable.classList.remove('dragging');
-            });
+   <script>
+    const draggables = document.querySelectorAll('.draggable');
+    const dropZones = document.querySelectorAll('.drop-zone');
+
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+            draggable.classList.add('dragging');
         });
-    
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', e => {
-                e.preventDefault(); // Permitir que se suelte el elemento
-            });
-    
-            zone.addEventListener('drop', e => {
-                const dragged = document.querySelector('.dragging');
-                if (dragged && dragged.dataset.word === zone.dataset.part) {
-                    zone.appendChild(dragged);
+
+        draggable.addEventListener('dragend', () => {
+            draggable.classList.remove('dragging');
+        });
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        zone.addEventListener('drop', e => {
+            const dragged = document.querySelector('.dragging');
+            if (dragged && dragged.dataset.word === zone.dataset.part) {
+                zone.appendChild(dragged);
+                dragged.classList.remove('incorrect');
+                dragged.classList.add('correct');
+                dragged.draggable = false;
+                zone.classList.remove('zone-incorrecta'); // Asegurarse de que la clase incorrecta se elimine si es correcta
+            } else {
+                dragged.classList.add('incorrect');
+                zone.classList.add('zone-incorrecta');
+
+                setTimeout(() => {
                     dragged.classList.remove('incorrect');
-                    dragged.classList.add('correct');
-                    dragged.draggable = false; // Desactiva el arrastre para palabras correctas
-                } else {
-                    dragged.classList.add('incorrect');
-                    zone.classList.add('zone-incorrecta');
-                    setTimeout(() => {
-                        dragged.classList.remove('incorrect');
-                        zone.classList.remove('zone-incorrecta');
-                    }, 1000);
-                }
-            });
+                    zone.classList.remove('zone-incorrecta');
+                }, 1000);
+            }
         });
-    </script>    
+    });
+</script>
 </body>
 </html>
