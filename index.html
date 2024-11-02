@@ -357,41 +357,30 @@
     </div>
 
    <script>
-   // Función para manejar el arrastre
-        document.querySelectorAll('.draggable').forEach(item => {
-            item.addEventListener('dragstart', dragstart);
-        });
+   function allowDrop(event) {
+        event.preventDefault();
+    }
 
-        // Función para manejar la zona de soltado
-        document.querySelectorAll('.drop-zone').forEach(zone => {
-            zone.addEventListener('dragover', dragover);
-            zone.addEventListener('drop', drop);
-        });
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.textContent);
+    }
 
-        function dragstart(event) {
-            event.dataTransfer.setData("text", event.target.getAttribute("data-word"));
+    function drop(event) {
+        event.preventDefault();
+        const word = event.dataTransfer.getData("text");
+        const category = event.target.getAttribute("data-category");
+
+        if ((category === "Food" && (word === "Apple" || word === "Pizza" || word === "Cake")) ||
+            (category === "Drink" && (word === "Water" || word === "Juice"))) {
+            event.target.classList.remove("incorrect");
+            event.target.appendChild(document.createTextNode(word + " "));
+        } else {
+            event.target.classList.add("incorrect");
+            setTimeout(() => {
+                event.target.classList.remove("incorrect");
+            }, 1000);
         }
-
-        function dragover(event) {
-            event.preventDefault();
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            const draggedWord = event.dataTransfer.getData("text");
-            const targetPart = event.target.getAttribute("data-part");
-
-            // Verifica si la palabra es correcta o incorrecta
-            if (draggedWord === targetPart) {
-                event.target.classList.remove("zone-incorrecta"); // Elimina el estilo incorrecto si es correcto
-                event.target.classList.add("correct"); // O añade otro estilo si deseas indicar que es correcto
-            } else {
-                event.target.classList.add("zone-incorrecta"); // Añade el estilo incorrecto
-                setTimeout(() => {
-                    event.target.classList.remove("zone-incorrecta");
-                }, 1000); // Elimina el estilo incorrecto después de 1 segundo
-            }
-        }
+    }
 </script>
 </body>
 </html>
