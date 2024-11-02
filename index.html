@@ -122,10 +122,6 @@
           border: 2px solid #dc3545; /* Rojo similar al color de la clase incorrect */
           background-color: #f8d7da; /* Fondo rojo claro para mayor visibilidad */
         }
-        .zone-incorrecta {
-          background-color: red;
-        }
-
 
 
         /* Posición de cada recuadro */
@@ -146,7 +142,7 @@
             margin-left: 30px;
             width: 200px;
             text-align: left;
-          }
+        }
 
         .word-bank h2 {
             margin-bottom: 10px;
@@ -357,35 +353,112 @@
     </div>
 
    <script>
-    // Agrega el evento dragstart para que el elemento sea arrastrable
-    document.querySelectorAll('.draggable').forEach(item => {
-        item.addEventListener('dragstart', event => {
-            event.dataTransfer.setData('text', event.target.getAttribute('data-word'));
-        });
+   const draggables = document.querySelectorAll('.draggable');
+const dropZones = document.querySelectorAll('.drop-zone');
+
+function handleDragStart(e) {
+    this.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', this.dataset.word);
+}
+
+function handleDragEnd() {
+    this.classList.remove('dragging');
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    const draggedWord = e.dataTransfer.getData('text/plain');
+    const draggedElement = document.querySelector(`[data-word="${draggedWord}"]`);
+
+    if (draggedElement && draggedWord === this.dataset.part) {
+        this.appendChild(draggedElement);
+        draggedElement.classList.remove('incorrect');
+        draggedElement.classList.add('correct');
+        draggedElement.draggable = false; // Deshabilitar el arrastre después de soltar
+        draggedElement.removeEventListener('touchstart', handleTouchStart);
+        draggedElement.removeEventListener('touchmove', handleTouchMove);
+        draggedElement.removeEventListener('touchend', handleTouchEnd);
+    } else {
+        draggedElement.classList.add('incorrect');
+        setTimeout(() => {
+            draggedElement.classList.remove('incorrect');
+            document.querySelector('.word-bank .dotted-box').appendChild(draggedElement);
+        }, 1000);
+    }
+}
+
+draggables.forEach(draggable => {
+    draggable.addEventListener('dragstart', handleDragStart);
+    draggable.addEventListener('dragend', handleDragEnd);
+});
+
+dropZones.forEach(zone => {
+    zone.addEventListener('dragover', handleDragOver);
+    zone.addEventListener('drop', handleDrop);
+});
+
+// Funciones de soporte para dispositivos táctiles
+function handleTouchStart(e) {
+    const touch = e.touches[0];
+    this.classList.add('dragging');
+    this.style.position = 'absolute';
+    this.style.left = `${touch.clientX - this.offsetWidth / 2}px`;
+    this.style.top = `${touch.clientY - this.offsetHeight / 2}px`;
+    e.preventDefault();
+}
+
+function handleTouchMove(e) {
+    const touch = e.touches[0];
+    this.style.left = `${touch.clientX - this.offsetWidth / 2}px`;
+    this.style.top = `${touch.clientY - this.offsetHeight / 2}px`;
+    e.preventDefault();
+}
+
+function handleTouchEnd(e) {
+    const touch = e.changedTouches[0];
+    const dropZonesArray = Array.from(dropZones);
+    const dropZoneHit = dropZonesArray.find(zone => {
+        const rect = zone.getBoundingClientRect();
+        return (
+            touch.clientX >= rect.left &&
+            touch.clientX <= rect.right &&
+            touch.clientY >= rect.top &&
+            touch.clientY <= rect.bottom
+        );
     });
 
-    // Configura los eventos dragover y drop para las zonas de caída (drop zones)
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.addEventListener('dragover', event => {
-            event.preventDefault(); // Permite que el elemento sea soltado
-        });
+    if (dropZoneHit && this.dataset.word === dropZoneHit.dataset.part) {
+        dropZoneHit.appendChild(this);
+        this.classList.remove('incorrect');
+        this.classList.add('correct');
+        this.draggable = false; // Deshabilitar el arrastre
+        this.removeEventListener('touchstart', handleTouchStart);
+        this.removeEventListener('touchmove', handleTouchMove);
+        this.removeEventListener('touchend', handleTouchEnd);
+    } else {
+        this.classList.add('incorrect');
+        zone.classList.add('zone-incorrecta'); // Marcar la zona como incorrecta visualmente
+        setTimeout(() => {
+            this.classList.remove('incorrect');
+            document.querySelector('.word-bank .dotted-box').appendChild(this);
+        }, 1000);
+    }
 
-        zone.addEventListener('drop', event => {
-            event.preventDefault();
-            const word = event.dataTransfer.getData('text'); // Obtiene la palabra arrastrada
-            const correctPart = zone.getAttribute('data-part'); // Parte del cuerpo correcta
+    this.style.position = '';
+    this.style.left = '';
+    this.style.top = '';
+    this.classList.remove('dragging');
+}
 
-            // Verifica si la palabra coincide con la zona de caída
-            if (word === correctPart) {
-                zone.classList.add('correct');
-                zone.classList.remove('zone-incorrecta');
-                zone.textContent = word;
-            } else {
-                zone.classList.add('zone-incorrecta'); // Pone el borde en rojo para incorrecto
-                zone.classList.remove('correct');
-            }
-        });
-    });
+draggables.forEach(draggable => {
+    draggable.addEventListener('touchstart', handleTouchStart);
+    draggable.addEventListener('touchmove', handleTouchMove);
+    draggable.addEventListener('touchend', handleTouchEnd);
+});
 </script>
 </body>
 </html>
