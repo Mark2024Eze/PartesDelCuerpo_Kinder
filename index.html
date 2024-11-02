@@ -415,15 +415,18 @@ draggables.forEach(draggable => {
         draggable.style.position = 'absolute'; // Cambia la posición para el arrastre
         draggable.style.left = `${touch.clientX - draggable.offsetWidth / 2}px`;
         draggable.style.top = `${touch.clientY - draggable.offsetHeight / 2}px`;
+        e.preventDefault(); // Prevenir el desplazamiento de la pantalla
     });
 
     draggable.addEventListener('touchmove', (e) => {
         const touch = e.touches[0];
         draggable.style.left = `${touch.clientX - draggable.offsetWidth / 2}px`;
         draggable.style.top = `${touch.clientY - draggable.offsetHeight / 2}px`;
+        e.preventDefault(); // Prevenir el desplazamiento de la pantalla
     });
 
     draggable.addEventListener('touchend', (e) => {
+        const touch = e.changedTouches[0]; // Usamos changedTouches en lugar de touches
         const dropZonesArray = Array.from(dropZones);
         const dropZoneHit = dropZonesArray.find(zone => {
             const rect = zone.getBoundingClientRect();
@@ -452,6 +455,7 @@ draggables.forEach(draggable => {
         draggable.style.position = '';
         draggable.style.left = '';
         draggable.style.top = '';
+        draggable.classList.remove('dragging'); // Limpiar clase de arrastre
     });
 });
 </script>
