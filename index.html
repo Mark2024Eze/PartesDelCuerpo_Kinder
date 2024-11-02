@@ -368,7 +368,7 @@
 
     dropZones.forEach(zone => {
         zone.addEventListener('dragover', e => {
-            e.preventDefault();
+            e.preventDefault(); // Necesario para permitir la zona de soltar
         });
 
         zone.addEventListener('drop', e => {
@@ -377,12 +377,11 @@
                 zone.appendChild(dragged);
                 dragged.classList.remove('incorrect');
                 dragged.classList.add('correct');
-                dragged.draggable = false;
-                zone.classList.remove('zone-incorrecta'); // Asegurarse de que la clase incorrecta se elimine si es correcta
+                dragged.draggable = false; // Deshabilitar el arrastre después de soltarlo correctamente
             } else {
+                // Manejo de incorrecto
                 dragged.classList.add('incorrect');
                 zone.classList.add('zone-incorrecta');
-
                 setTimeout(() => {
                     dragged.classList.remove('incorrect');
                     zone.classList.remove('zone-incorrecta');
