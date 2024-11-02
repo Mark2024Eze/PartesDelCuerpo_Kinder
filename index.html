@@ -356,6 +356,7 @@
     const draggables = document.querySelectorAll('.draggable');
 const dropZones = document.querySelectorAll('.drop-zone');
 
+// Agregar eventos a los elementos arrastrables
 draggables.forEach(draggable => {
     draggable.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('text/plain', draggable.dataset.word);
@@ -367,30 +368,26 @@ draggables.forEach(draggable => {
     });
 });
 
+// Agregar eventos a las zonas de caída
 dropZones.forEach(zone => {
     zone.addEventListener('dragover', (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Permitir el drop
     });
 
-    zone.addEventListener('drop', function(e) {
+    zone.addEventListener('drop', (e) => {
         e.preventDefault();
         const draggedWord = e.dataTransfer.getData('text/plain');
-        const draggedElement = document.querySelector(`[data-word="${draggedWord}"]`);
+        const draggedElement = document.querySelector(`.dragging`);
 
-        if (draggedElement && draggedWord === this.dataset.part) {
-            this.appendChild(draggedElement);
-            draggedElement.classList.remove('incorrect');
+        if (draggedElement && draggedWord === zone.dataset.part) {
+            zone.appendChild(draggedElement);
+            draggedElement.classList.remove('dragging');
             draggedElement.classList.add('correct');
-            draggedElement.draggable = false;
-        } else {
-            const originalZone = document.querySelector(`[data-word="${draggedWord}"]`).parentNode;
-            originalZone.appendChild(draggedElement);
+            draggedElement.draggable = false; // Deshabilitar el arrastre después de colocarlo
+        } else if (draggedElement) {
             draggedElement.classList.add('incorrect');
-            this.classList.add('zone-incorrecta');
-
             setTimeout(() => {
                 draggedElement.classList.remove('incorrect');
-                this.classList.remove('zone-incorrecta');
             }, 1000);
         }
     });
