@@ -357,30 +357,35 @@
     </div>
 
    <script>
-   function allowDrop(event) {
-        event.preventDefault();
-    }
+    // Agrega el evento dragstart para que el elemento sea arrastrable
+    document.querySelectorAll('.draggable').forEach(item => {
+        item.addEventListener('dragstart', event => {
+            event.dataTransfer.setData('text', event.target.getAttribute('data-word'));
+        });
+    });
 
-    function drag(event) {
-        event.dataTransfer.setData("text", event.target.textContent);
-    }
+    // Configura los eventos dragover y drop para las zonas de caída (drop zones)
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', event => {
+            event.preventDefault(); // Permite que el elemento sea soltado
+        });
 
-    function drop(event) {
-        event.preventDefault();
-        const word = event.dataTransfer.getData("text");
-        const category = event.target.getAttribute("data-category");
+        zone.addEventListener('drop', event => {
+            event.preventDefault();
+            const word = event.dataTransfer.getData('text'); // Obtiene la palabra arrastrada
+            const correctPart = zone.getAttribute('data-part'); // Parte del cuerpo correcta
 
-        if ((category === "Food" && (word === "Apple" || word === "Pizza" || word === "Cake")) ||
-            (category === "Drink" && (word === "Water" || word === "Juice"))) {
-            event.target.classList.remove("incorrect");
-            event.target.appendChild(document.createTextNode(word + " "));
-        } else {
-            event.target.classList.add("incorrect");
-            setTimeout(() => {
-                event.target.classList.remove("incorrect");
-            }, 1000);
-        }
-    }
+            // Verifica si la palabra coincide con la zona de caída
+            if (word === correctPart) {
+                zone.classList.add('correct');
+                zone.classList.remove('zone-incorrecta');
+                zone.textContent = word;
+            } else {
+                zone.classList.add('zone-incorrecta'); // Pone el borde en rojo para incorrecto
+                zone.classList.remove('correct');
+            }
+        });
+    });
 </script>
 </body>
 </html>
