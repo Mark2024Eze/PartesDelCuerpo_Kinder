@@ -356,106 +356,43 @@
     const draggables = document.querySelectorAll('.draggable');
 const dropZones = document.querySelectorAll('.drop-zone');
 
-// Función para manejar el inicio del arrastre
-function handleDragStart(e) {
-    this.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', this.dataset.word);
-}
-
-// Función para manejar el final del arrastre
-function handleDragEnd() {
-    this.classList.remove('dragging');
-}
-
-// Función para manejar el arrastre sobre la zona de caída
-function handleDragOver(e) {
-    e.preventDefault();
-}
-
-// Función para manejar la caída en la zona de caída
-function handleDrop(e) {
-    e.preventDefault();
-    const draggedWord = e.dataTransfer.getData('text/plain');
-    const draggedElement = document.querySelector(`[data-word="${draggedWord}"]`);
-
-    if (draggedElement && draggedWord === this.dataset.part) {
-        this.appendChild(draggedElement);
-        draggedElement.classList.remove('incorrect');
-        draggedElement.classList.add('correct');
-        draggedElement.draggable = false; // Deshabilitar el arrastre después de soltar
-    } else {
-        draggedElement.classList.add('incorrect');
-        this.classList.add('zone-incorrecta'); // Marcar la zona como incorrecta visualmente
-
-        // Quitar la clase de incorrecto después de 1 segundo
-        setTimeout(() => {
-            draggedElement.classList.remove('incorrect');
-            this.classList.remove('zone-incorrecta');
-        }, 1000);
-    }
-}
-
-// Agregar eventos a los elementos arrastrables
 draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', handleDragStart);
-    draggable.addEventListener('dragend', handleDragEnd);
-});
-
-// Agregar eventos a las zonas de caída
-dropZones.forEach(zone => {
-    zone.addEventListener('dragover', handleDragOver);
-    zone.addEventListener('drop', handleDrop);
-});
-
-// Para soporte en dispositivos táctiles
-draggables.forEach(draggable => {
-    draggable.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
+    draggable.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', draggable.dataset.word);
         draggable.classList.add('dragging');
-        draggable.style.position = 'absolute'; // Cambia la posición para el arrastre
-        draggable.style.left = `${touch.clientX - draggable.offsetWidth / 2}px`;
-        draggable.style.top = `${touch.clientY - draggable.offsetHeight / 2}px`;
-        e.preventDefault(); // Prevenir el desplazamiento de la pantalla
     });
 
-    draggable.addEventListener('touchmove', (e) => {
-        const touch = e.touches[0];
-        draggable.style.left = `${touch.clientX - draggable.offsetWidth / 2}px`;
-        draggable.style.top = `${touch.clientY - draggable.offsetHeight / 2}px`;
-        e.preventDefault(); // Prevenir el desplazamiento de la pantalla
+    draggable.addEventListener('dragend', () => {
+        draggable.classList.remove('dragging');
+    });
+});
+
+dropZones.forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
     });
 
-    draggable.addEventListener('touchend', (e) => {
-        const touch = e.changedTouches[0]; // Usamos changedTouches en lugar de touches
-        const dropZonesArray = Array.from(dropZones);
-        const dropZoneHit = dropZonesArray.find(zone => {
-            const rect = zone.getBoundingClientRect();
-            return (
-                touch.clientX >= rect.left &&
-                touch.clientX <= rect.right &&
-                touch.clientY >= rect.top &&
-                touch.clientY <= rect.bottom
-            );
-        });
+    zone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const draggedWord = e.dataTransfer.getData('text/plain');
+        const draggedElement = document.querySelector(`[data-word="${draggedWord}"]`);
 
-        if (dropZoneHit) {
-            dropZoneHit.appendChild(draggable);
-            draggable.classList.remove('incorrect');
-            draggable.classList.add('correct');
-            draggable.draggable = false; // Deshabilitar el arrastre después de soltar
+        if (draggedElement && draggedWord === this.dataset.part) {
+            this.appendChild(draggedElement);
+            draggedElement.classList.remove('incorrect');
+            draggedElement.classList.add('correct');
+            draggedElement.draggable = false;
         } else {
-            draggable.classList.add('incorrect');
-            // Quitar la clase de incorrecto después de 1 segundo
+            const originalZone = document.querySelector(`[data-word="${draggedWord}"]`).parentNode;
+            originalZone.appendChild(draggedElement);
+            draggedElement.classList.add('incorrect');
+            this.classList.add('zone-incorrecta');
+
             setTimeout(() => {
-                draggable.classList.remove('incorrect');
+                draggedElement.classList.remove('incorrect');
+                this.classList.remove('zone-incorrecta');
             }, 1000);
         }
-
-        // Resetear estilo
-        draggable.style.position = '';
-        draggable.style.left = '';
-        draggable.style.top = '';
-        draggable.classList.remove('dragging'); // Limpiar clase de arrastre
     });
 });
 </script>
